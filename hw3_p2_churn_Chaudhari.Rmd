@@ -136,7 +136,7 @@ as our metric but we might want to consider other metrics.
 
 **QUESTION** Why might overall prediction accuracy not be the most appropriate metric to consider? What other metrics might be important and why?
 
-> If one class dominates the dataset, it will naturally result in high accuracy even if all predictions are done as majority class. Like non exited who are 80%. Even if all are non exited still the accuracy will be 80% but we will miss the crucial 20% whom we are targetting fir analysis. 
+> If one class dominates the dataset, it will naturally result in high accuracy even if all predictions are done as majority class. Like non exited who are 80%. Even if all are non exited still the accuracy will be 80% but we will miss the crucial 20% whom we are targetting for analysis. 
 Other metris which are important are:   
 Accuracy:It focuses on the accuracy of positive predictions and is useful when the cost of false positives is high.   
 Sensitivity: It measures the model's ability to correctly identify positive instances  
@@ -242,7 +242,7 @@ cm_test_lr1
 
 **QUESTION** How did accuracy, sensitivity and specificity change when predicting on test data instead of the training data?
 
-> All three decreased slighlty from training to test data.
+> All three decreased slighlty from training to test data.This may be because the model is being evaluated on unseen data, and it may not generalize as well as it did on the training data.
 Accuracy: 0.8363 to 0.832  
 Sensitivity: 0.38375 to 0.37581  
 Specificity: 0.95613 to 0.95267  
@@ -274,7 +274,8 @@ cm_test_lr2
 
 ```
 
-> PUT ANSWER HERE
+> We see the senstivity go up and specificity go down from the previous model of 0.5. 
+Basically when we change the threshold from 0.5 to 0.4, we are lowering the threshold, which may cause  to classify more cases as positive (i.e. predicting that customers will churn). This increases our sensitivity, which means we're better at detecting the customers who are actually going to churn.   However, this also tends to decrease specificity because we're now more likely to classify some non-churners as churners. 
 
 
 ### Fit simple decision tree model
@@ -316,7 +317,11 @@ rpart.plot(model_tree1, yesno = 2)
 
 Explain the bottom left node of your tree. What conditions have to be true for a case to end up being classified by that node? What do those three numbers in the node mean? What does the color of the node mean?
 
-> PUT ANSWER HERE
+> Bottom left node (no of products>3) conditions for customer to be classified true: age < 43 and no. of products used >3  and exited:Yes
+Numbers meaning: First number shows the result 0 or 1 which means either the customer exit/did not exit.   
+Second number shows the exit probability.  
+Third number indicates proportion of the population that resides in this node.   
+Color are given based on the outcomes(i.e. exited here) Blue one are those who exited while green ones are those who stay
 
 Now, let's predict on test data.
 
@@ -336,7 +341,7 @@ cm_test_tree1
 **QUESTION** How does the performance of the decision tree compare to your
 logistic regression model? 
 
-> PUT ANSWER HERE
+> The perfomance measure look similar for both the models. Accuracy, sensitivity decreased slightly and specificity reamined the same
 
 ## Fit random forest model
 
@@ -375,16 +380,19 @@ cm_test_rf1
 
 **QUESTION** Summarize the performance of all three of your models (logistic, tree, random forest)? Is their evidence of overfitting in any of these model and what is your evidence for your answer? Add code chunks as needed.
 
-> PUT ANSWER HERE
+> Out of All there models highest test accuracy is for the tree model 85.26% but less sensitivity 0.4366. However the best sensitivity is for the random forest model 0.4982 with reasonable accuracy 85.08%. Logistics model (0.4) also performs good in sensitivity 0.4982 but with reduced accuracy 83.09%.   
+There is a chance of overfitting in random forest model as the accuracy has dropped from train to test results. 
 
 
 **QUESTION** If you had to pick one to use in an actual financial environment, which model would you use and why? As a manager in charge of retention, what model performance metrics are you most interested in? What are the basic tradeoffs you see in terms of the initiatives you might undertake in response to such a model? For example, if you were really interested in reducing the number of customers exiting, maybe there are some things you might do to incent high risk (of exiting) customers to stay. Discuss.
 
+> : I would choose the random forest model which shows highest accuracy and sensitivity. This indicates that it is better at correctly identifying both customers who are likely to churn and those who are not.  
+As a manager in charge of retention, the model performance metrics that I would be most interested in are sensitivity This metric measures the proportion of actual churn cases that are correctly identified by the model. As a retention manager, my primary goal would be to accurately identify customers who are at risk of churning so that appropriate retention strategies can be implemented.
+We need to find the at risk customers first to find how to incentivise them. For example if age is a factor what should we do differently. e.g if age>43 are exiting then we need to study these groups and find ways to retain them. Similarly geography can be a factor. 
 
 **HACKER EXTRA**
 
-Create a variable importance plot for your random forest to try to get a sense of which variables are most important in predicting customers likely to churn. Build another random forest using only the top 5 or so variables
-suggested by the importance plot. How does the performance of this reduced model compare to the original model?
+Create a variable importance plot for your random forest to try to get a sense of which variables are most important in predicting customers likely to churn. Build another random forest using only the top 5 or so variables suggested by the importance plot. How does the performance of this reduced model compare to the original model?
 
 ```{r importance}
 # Obtain variable importance from the random forest model
@@ -406,3 +414,5 @@ class_test_rf_reduced <- predict(model_rf_reduced, newdata = churn_test[, top_va
 cm_test_rf_reduced <- confusionMatrix(class_test_rf_reduced, churn_test$Exited, positive = "1")
 cm_test_rf_reduced
 ```
+
+> The accuracy of this model is 84.38 while the sensitivity is reduced to 0.46. The accuracy and senstivity has reduced when compared to the top performing model for each
