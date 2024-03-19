@@ -136,7 +136,11 @@ as our metric but we might want to consider other metrics.
 
 **QUESTION** Why might overall prediction accuracy not be the most appropriate metric to consider? What other metrics might be important and why?
 
-> PUT YOUR ANSWER HERE
+> If one class dominates the dataset, it will naturally result in high accuracy even if all predictions are done as majority class. Like non exited who are 80%. Even if all are non exited still the accuracy will be 80% but we will miss the crucial 20% whom we are targetting fir analysis. 
+Other metris which are important are:   
+Accuracy:It focuses on the accuracy of positive predictions and is useful when the cost of false positives is high.   
+Sensitivity: It measures the model's ability to correctly identify positive instances  
+Specificity: The proportion of true negative predictions out of all actual negative instances in the data. 
 
 ### Fit a null model
 
@@ -167,9 +171,9 @@ cm_test_null
 * Are you surprised that the performance of the null model is almost identical on test and train? Why or why not?
 * Explain the sensitivity and specificity values.
 
-> No, it's not surprising that the performance of the null model is almost identical on both the test and train datasets. The null model simply predicts the majority class (0 in this case, indicating customers who did not exit the bank) for all instances, resulting in a constant prediction regardless of the dataset. Since the null model does not learn from the data or make any distinctions between train and test sets, its performance remains consistent across both datasets.
-      Sensitivity - Sensitivity measures the ability of the model to correctly identify positive cases out of all actual positive cases. Since the null model predicts all cases as negative (0), it correctly identifies none of the actual positive cases. Therefore, the sensitivity value is 0.
-      Specificity - Specificity measures the ability of the model to correctly identify negative cases out of all actual negative cases. Since the null model predicts all cases as negative (0), it correctly identifies all actual negative cases. Therefore, the specificity value is 1.
+> No, it's not surprising that the performance of the null model is almost identical on both the test and train datasets. The null model simply predicts the majority class (0 in this case, indicating customers who did not exit the bank) for all instances, resulting in a constant prediction regardless of the dataset. Since the null model does not learn from the data or make any distinctions between train and test sets, its performance remains consistent across both datasets.  
+Sensitivity - Sensitivity measures the ability of the model to correctly identify positive cases out of all actual positive cases. Since the null model predicts all cases as negative (0), it correctly identifies none of the actual positive cases. Therefore, the sensitivity value is 0.  
+Specificity - Specificity measures the ability of the model to correctly identify negative cases out of all actual negative cases. Since the null model predicts all cases as negative (0), it correctly identifies all actual negative cases. Therefore, the specificity value is 1.
 
 So, as we begin fitting more complicated models, remember that we need to
 outperform the null model to make it worth it to use more complicated models.
@@ -238,7 +242,10 @@ cm_test_lr1
 
 **QUESTION** How did accuracy, sensitivity and specificity change when predicting on test data instead of the training data?
 
-> PUT ANSWER HERE
+> All three decreased slighlty from training to test data.
+Accuracy: 0.8363 to 0.832  
+Sensitivity: 0.38375 to 0.37581  
+Specificity: 0.95613 to 0.95267  
 
 Now change the threshold from 0.5 to 0.4 and create a new model using this new threshold. How does the sensitivity and specificity change as compared to our first logistic regression model? Explain why this happens?
 
